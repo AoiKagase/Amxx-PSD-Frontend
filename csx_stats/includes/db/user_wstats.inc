@@ -84,4 +84,34 @@ class T_USER_WSTATS extends T_CORE
 		return $result;
 	}
 
+	// get_user_wstats
+	function GetEloRankForUser($where = array()) 
+	{
+		$sql = 'SELECT '
+			.'	A.server_id'
+			.', A.auth_id'
+			.', IFNULL(SUM(CASE WHEN A.wpn_name = :knife THEN A.csx_kills ELSE 0 END),0) AS csx_knife'
+			.', IFNULL(SUM(CASE WHEN A.wpn_name = :he	 THEN A.csx_kills ELSE 0 END),0) AS csx_hegrenade'
+			.', IFNULL(SUM(CASE WHEN A.wpn_name != :he	AND A.wpn_name != :knife THEN A.csx_kills ELSE 0 END),0) AS csx_kills'
+			.', IFNULL(SUM(CASE WHEN A.wpn_name != :he	AND A.wpn_name != :knife THEN A.csx_hs ELSE 0 END),0) AS csx_hs'
+			.' FROM  user_wstats AS A'
+			.' WHERE auth_id = :auth_id'
+			.' GROUP BY A.server_id, A.auth_id';
+
+		try
+		{
+			$prp = $this->dbh->prepare($sql);
+			$prp->bindValue(':knife'	, 'wpn_knife');
+			$prp->bindValue(':he'		, 'wpn_hegrenade');
+			$prp->bindValue(':auth_id'	, $where['auth_id']);
+			$prp->execute();
+			$result = $prp->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (PDOException $e)
+		{
+			echo $e->getMessage() . "\n";
+		}
+		return $result;
+	}
+
 }

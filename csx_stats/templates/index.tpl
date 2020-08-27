@@ -21,6 +21,7 @@
 				<td scope="col" rowspan="2">Kills</td>
 				<td scope="col" rowspan="2">Deaths</td>
 				<td scope="col" rowspan="2">TeamKills</td>
+				<td scope="col" rowspan="2">ELO</td>
 				<!--
 				<td scope="col" rowspan="2">Hits</td>
 				<td scope="col" rowspan="2">Damages</td>
@@ -61,6 +62,7 @@
 				<td>{{ record.csx_kills }}</td>
 				<td>{{ record.csx_deaths }}</td>
 				<td>{{ record.csx_tks }}</td>
+				<td><img src="images/{{ record.csx_elo }}"></td>
 				<!--
 				<td>{{ record.csx_hits }}</td>
 				<td>{{ record.csx_dmg }}</td>
