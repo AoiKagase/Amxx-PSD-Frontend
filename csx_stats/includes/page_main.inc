@@ -2,6 +2,9 @@
 require_once("vendor/autoload.php");
 require_once("includes/db/_db_h.inc");
 require_once("includes/db/user_wstats.inc");
+
+require_once("includes/SteamID.inc");
+
 class PageMain
 {
 	protected $loader;
@@ -130,7 +133,7 @@ class PageMain
 				$wstats_sc 	= $this->get_user_wstats($auth_id);
 				if ($wstats_sc)
 				{
-				$wstats_sc 	= $this->get_user_wstats($auth_id);
+					$wstats_sc 	= $this->get_user_wstats($auth_id);
 					$dataset[$i]['csx_xp'] += ($wstats_sc[0]['csx_knife'] * 4);
 					$dataset[$i]['csx_xp'] += ($wstats_sc[0]['csx_hegrenade'] * 5);
 					$dataset[$i]['csx_xp'] += ($wstats_sc[0]['csx_hs'] * 3);
@@ -143,6 +146,7 @@ class PageMain
 					if ($iLevel < 57)
 						$iLevel++;
 				}
+				$dataset[$i]['csx_elo_name'] = $this->ELO_IMAGE[$iLevel][0];
 				$dataset[$i]['csx_elo'] = $this->ELO_IMAGE[$iLevel][2];
 			}
 		}
@@ -158,5 +162,37 @@ class PageMain
 		];
 
 		return $stats->GetEloRankForUser($where);
-	}	
+	}
+
+	function get_user_steam_link($auth_ids)
+	{
+		$ids = explode(',', $auth_ids);
+		$auth_ids = '';
+		foreach($ids as $auth_id)
+		{
+			if (isset($auth_id) && $auth_id !== '')
+			{
+				$s = new SteamID($auth_id);
+				$auth_ids .= $s->ConvertToUInt64().',';
+			}
+		}
+
+		// Need Your Steam API key
+		$WebAPIKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+		$Parameters =
+		[
+			'key' => $WebAPIKey,
+			'steamids' => $auth_ids
+		];
+	
+		$api_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?' . http_build_query( $Parameters );
+		$json = json_decode(file_get_contents($api_url), true);
+	
+		if( isset( $json[ 'response' ][ 'players' ] ) )
+		{
+			return array_column($json[ 'response' ][ 'players' ], null, 'steamid');
+		}
+		return array();
+	}
 }

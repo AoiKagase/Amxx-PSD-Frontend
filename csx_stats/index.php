@@ -26,6 +26,27 @@ class Index extends PageMain
 		$info_array = array_column($info_rec, null, "auth_id");
 		$result 	= $this->calculate_rate($stats_rec, $info_array);
 
+		$auth_ids = "";
+		foreach($result as $player)
+		{
+			if ($player['auth_id'] !== 'BOT')
+				$auth_ids .= $player['auth_id'].',';
+		}
+		
+		$steam_data = $this->get_user_steam_link($auth_ids);
+		
+		for($i = 0; $i < count($result); $i++)
+		{
+			if ($result[$i]['auth_id'] !== 'BOT')
+			{
+				$s = new SteamID($result[$i]['auth_id']);
+				$auth_id = $s->ConvertToUInt64();
+				if (isset($steam_data[$auth_id]))
+				{
+					$result[$i]['steam_data'] = $steam_data[$auth_id]; 
+				}
+			}
+		}
 		return $result;
 	}
 }

@@ -4,6 +4,7 @@ require_once("includes/db/user_info.inc");
 require_once("includes/db/server_round.inc");
 require_once("includes/db/total_stats.inc");
 require_once("includes/db/user_wstats.inc");
+
 class UserDetail extends PageMain
 {
 	function __construct()
@@ -29,6 +30,10 @@ class UserDetail extends PageMain
 
 			$hit_mk		= $this->get_hit_marker($wstats_sc);
 
+			$steam_link = $this->get_user_steam_link($auth_id);
+
+			$s 			= new SteamID($auth_id);
+			
 			echo $this->twig->render('user_detail.tpl',  
 				[
 					'info'		=> $info_rec,
@@ -36,6 +41,7 @@ class UserDetail extends PageMain
 					'team' 		=> $team_sc,
 					'wstats'	=> $wstats_sc,
 					'hitimg'	=> $hit_mk,
+					'steam'		=> $steam_link[$s->ConvertToUInt64()],
 				]
 			);
 		} else

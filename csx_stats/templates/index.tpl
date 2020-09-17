@@ -14,7 +14,7 @@
 			<thead>
 			<tr>
 				<td scope="col" rowspan="2">Rank</td>
-			<!--<td>authid</td>-->
+				<td scope="col" rowspan="2"></td>
 				<td scope="col" rowspan="2">Name</td>
 				<td scope="col" rowspan="2">Play Time</td>
 				<td scope="col" rowspan="2">Score</td>
@@ -52,6 +52,9 @@
 			<tr class="table-dark">
 				<th scope="row">{{ record.csx_rank }}</th>
 				<td>
+					<a href="{{record.steam_data.profileurl}}" target="_blank"><img src="{{record.steam_data.avatarmedium}}"></a>
+				</td>
+				<td>
 					<form method="post" name="user_rank" action="user_detail.php">
 						<input type="hidden" name="auth_id" value="{{ record.auth_id }}" />
 						<a href="#" onclick="javascript:user_rank[{{ loop.index0 }}].submit()">{{ record.name }}</a>
@@ -62,7 +65,7 @@
 				<td>{{ record.csx_kills }}</td>
 				<td>{{ record.csx_deaths }}</td>
 				<td>{{ record.csx_tks }}</td>
-				<td><img src="images/{{ record.csx_elo }}"></td>
+				<td><img src="images/{{ record.csx_elo }}" width="50%" height="50%" alt="{{record.csx_elo_name}}"></td>
 				<!--
 				<td>{{ record.csx_hits }}</td>
 				<td>{{ record.csx_dmg }}</td>

@@ -30,7 +30,10 @@ $(function() {
 		<div class="card border-dark mb-3">
 			<div class="card-header">Player Infomation.</div>
 			<div class="card-body">
-				<h4 class="card-title">{{ info.name }}</h4>
+				<h4 class="card-title">
+					<img src="{{steam.avatar}}" width="30px" height="30px">
+					<a href="{{steam.link}}" target="_blank">{{ info.name }}</a>
+				</h4>
 				<div class="row">
 				<div class="card border-light mb-3" style="min-width:10rem; max-width: 10rem;">
 					<div class="card-body">
