@@ -57,7 +57,11 @@
 				<td>
 					<form method="post" name="user_rank" action="user_detail.php">
 						<input type="hidden" name="auth_id" value="{{ record.auth_id }}" />
-						<a href="#" onclick="javascript:user_rank[{{ loop.index0 }}].submit()">{{ record.name }}</a>
+						{% if record.name|trim matches '#^(\[[A-Z][A-Z]\])?.*(Player)$#' or record.name|trim matches '#^(\(\d\))?Player$#'%}
+							<a href="#" onclick="javascript:user_rank[{{ loop.index0 }}].submit()">{{ record.steam_data.personaname }}</a>
+						{% else %}
+							<a href="#" onclick="javascript:user_rank[{{ loop.index0 }}].submit()">{{ record.name }}</a>
+						{% endif %}
 					</form>
 				</td>
 				<td>{{ record.online_time }}</td>
