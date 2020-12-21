@@ -4,7 +4,7 @@
 		<table>
 			<thead>
 			<tr>
-				<td colspan="22" class="catHead">
+				<td colspan="23" class="catHead">
 					<span class="genmed"><b>Player Ranking</b></span>
 				</td>
 			</tr>
@@ -14,6 +14,7 @@
 			<thead>
 			<tr>
 				<td scope="col" rowspan="2">Rank</td>
+				<td scope="col" rowspan="2"></td>
 				<td scope="col" rowspan="2"></td>
 				<td scope="col" rowspan="2">Name</td>
 				<td scope="col" rowspan="2">Play Time</td>
@@ -52,7 +53,10 @@
 			<tr class="table-dark">
 				<th scope="row">{{ record.csx_rank }}</th>
 				<td>
-					<a href="{{record.steam_data.profileurl}}" target="_blank"><img src="{{record.steam_data.avatarmedium}}"></a>
+					<span class="flag-icon flag-icon-{{record.country}}"></span>
+				</td>
+				<td>
+					<a href="{{record.steam_data.profileurl}}" target="_blank" ><img src="{{record.steam_data.avatar}}"></a>
 				</td>
 				<td>
 					<form method="post" name="user_rank" action="user_detail.php">
@@ -69,7 +73,7 @@
 				<td>{{ record.csx_kills }}</td>
 				<td>{{ record.csx_deaths }}</td>
 				<td>{{ record.csx_tks }}</td>
-				<td><img src="images/{{ record.csx_elo }}" width="50%" height="50%" alt="{{record.csx_elo_name}}"></td>
+				<td><img src="images/{{ record.csx_elo }}" width="25%" height="25%" alt="{{record.csx_elo_name}}"></td>
 				<!--
 				<td>{{ record.csx_hits }}</td>
 				<td>{{ record.csx_dmg }}</td>

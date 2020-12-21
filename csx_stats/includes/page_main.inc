@@ -4,6 +4,7 @@ require_once("includes/db/_db_h.inc");
 require_once("includes/db/user_wstats.inc");
 
 require_once("includes/SteamID.inc");
+use GeoIp2\Database\Reader;
 
 class PageMain
 {
@@ -11,6 +12,7 @@ class PageMain
 	protected $twig;
 	protected $dbh;
 	protected $server_id;
+	protected $geoip;
 	protected $ELO_IMAGE = [
 		//Rank 		  		XP/Lvl
 		["Silver I"		,	0		,"ranks/silver_1.png"], // Lvl 0
@@ -77,7 +79,8 @@ class PageMain
 		$this->dbh			= DBHandler::CreateConnection();
 		$this->server_id	= 1;
 		$this->loader		= new \Twig\Loader\FilesystemLoader('templates');
-		$this->twig			= new \Twig\Environment($this->loader, ['cache' => 'templates/compiled',]);
+		$this->twig			= new \Twig\Environment($this->loader, ['cache' => 'templates/compiled', 'auto_reload' => true]);
+		$this->geoip 		= new Reader('/usr/local/share/GeoIP/GeoLite2-City.mmdb');
 	}
 
 	public function main()
@@ -103,6 +106,7 @@ class PageMain
 			if (isset($info))
 			{
 				$dataset[$i]['name']		= $info[$dataset[$i]['auth_id']]['name'];
+				$dataset[$i]['latest_ip']	= $info[$dataset[$i]['auth_id']]['latest_ip'];
 				$dataset[$i]['online_time']	= $info[$dataset[$i]['auth_id']]['online_time'];
 			}
 			$dataset[$i]['efficiency'] 	= 0;
@@ -178,7 +182,7 @@ class PageMain
 		}
 
 		// Need Your Steam API key
-		$WebAPIKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+		$WebAPIKey = '7F324BB8CB28D4A85D474D318A0BEA74';
 
 		$Parameters =
 		[

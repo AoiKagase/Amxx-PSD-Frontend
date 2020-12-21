@@ -44,6 +44,14 @@ class Index extends PageMain
 				if (isset($steam_data[$auth_id]))
 				{
 					$result[$i]['steam_data'] = $steam_data[$auth_id]; 
+					try
+					{
+						$country_rec 		   = $this->geoip->city($result[$i]['latest_ip']);
+						$result[$i]['country'] = strtolower($country_rec->country->isoCode);				
+					} catch(Exception $err)
+					{
+
+					}
 				}
 			}
 		}
