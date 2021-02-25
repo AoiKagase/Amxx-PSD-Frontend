@@ -1,5 +1,7 @@
 {
     "require": {
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "components/flag-icon-css": "^3.5",
+        "geoip2/geoip2": "^2.11"
     }
 }
