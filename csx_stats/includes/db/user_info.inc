@@ -29,9 +29,10 @@ class T_USER_INFO extends T_CORE
 			.'	A.auth_id'
 			.',	A.name'
 			.', A.latest_ip'
-			.',	SEC_TO_TIME(A.online_time) AS online_time'
+			.',	SEC_TO_TIME(FROM_UNIXTIME(A.online_time) - FROM_UNIXTIME(0)) AS online_time'
 			.' FROM user_info AS A'
-			.' WHERE created_at = (SELECT MAX(created_at) FROM user_info AS B WHERE B.auth_id = A.auth_id)'
+			.' WHERE created_at >= (SELECT MAX(created_at) FROM user_info AS B WHERE B.auth_id = A.auth_id)'
+			.' GROUP BY A.auth_id'
 			.' ORDER BY A.auth_id';
 		try
 		{

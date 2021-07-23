@@ -103,7 +103,7 @@ class PageMain
 	{
 		for($i = 0; $i < count($dataset); $i++)
 		{
-			if (isset($info))
+			if (isset($info[$dataset[$i]['auth_id']]))
 			{
 				$dataset[$i]['name']		= $info[$dataset[$i]['auth_id']]['name'];
 				$dataset[$i]['latest_ip']	= $info[$dataset[$i]['auth_id']]['latest_ip'];
@@ -182,7 +182,7 @@ class PageMain
 		}
 
 		// Need Your Steam API key
-		$WebAPIKey = '7F324BB8CB28D4A85D474D318A0BEA74';
+		$WebAPIKey = STEAM_API_KEY;
 
 		$Parameters =
 		[

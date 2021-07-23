@@ -18,22 +18,22 @@ abstract class T_CORE
 	{
 		$result = [];
 		$sql = 'SELECT '. implode(", ", $this->field)
-				.' FROM '.$this->table
+				.' FROM '.$this->table 
 				.' WHERE 1 = 1';
 
 		foreach($where as $key => $value)
 		{
-			$sql .= " AND (${key} = :${key})";
+			$sql .= sprintf(" AND (`%s` = :%s)", $key, $key);
 		}
 
 		$sql .= " ORDER BY ".implode(", ", $this->key);
-	
+
 		try
 		{
 			$prepare = $this->dbh->prepare($sql);
 			foreach($where as $key => $value)
 			{
-				$prepare->bindValue(':'.$key, $value);
+				$prepare->bindValue(":{$key}", $value);
 			}
 
 			$prepare->execute();

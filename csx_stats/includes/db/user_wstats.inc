@@ -81,6 +81,7 @@ class T_USER_WSTATS extends T_CORE
 		{
 			echo $e->getMessage() . "\n";
 		}
+		$prp->closeCursor();
 		return $result;
 	}
 

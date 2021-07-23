@@ -17,7 +17,7 @@ class DBHandler extends PDO
 			$con = new DBHandler($dsn, DB_USER, DB_PASS);
 		} catch (PDOException $e)
 		{
-			echo $e->getMessage();
+			echo 'DATABASE BROKEN...';//$e->getMessage();
 		}
 		return $con;
 	}

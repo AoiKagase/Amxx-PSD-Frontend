@@ -73,7 +73,7 @@
 				<td>{{ record.csx_kills }}</td>
 				<td>{{ record.csx_deaths }}</td>
 				<td>{{ record.csx_tks }}</td>
-				<td><img src="images/{{ record.csx_elo }}" width="25%" height="25%" alt="{{record.csx_elo_name}}"></td>
+				<td><img src="images/{{ record.csx_elo }}" style="width:25%" alt="{{record.csx_elo_name}}"></td>
 				<!--
 				<td>{{ record.csx_hits }}</td>
 				<td>{{ record.csx_dmg }}</td>
