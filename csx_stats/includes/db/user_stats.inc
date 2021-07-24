@@ -8,7 +8,7 @@ class T_USER_STATS extends T_CORE
 
 		$this->table = 'user_stats';
 
-		$this->$key = [
+		$this->key = [
 			'server_id',
 			'date',
 			'auth_id',
@@ -38,5 +38,5 @@ class T_USER_STATS extends T_CORE
 			'created_at',
 			'updated_at',
 		];
-	}	
+	}
 }

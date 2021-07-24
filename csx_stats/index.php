@@ -1,7 +1,7 @@
 <?php
 require_once("includes/page_main.inc");
 require_once("includes/db/user_info.inc");
-require_once("includes/db/total_stats.inc");
+require_once("includes/db/user_wstats.inc");
 class Index extends PageMain
 {
 	public function __construct()
@@ -20,7 +20,7 @@ class Index extends PageMain
 		$info		= new T_USER_INFO($this->dbh);
 		$info_rec	= $info->GetNewerList();
 
-		$stats		= new T_TOTAL_STATS($this->dbh);
+		$stats		= new T_USER_WSTATS($this->dbh);
 		$stats_rec 	= $stats->GetTopRanker();
 
 		$info_array = array_column($info_rec, null, "auth_id");

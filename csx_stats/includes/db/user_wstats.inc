@@ -85,6 +85,44 @@ class T_USER_WSTATS extends T_CORE
 		return $result;
 	}
 
+	function GetTopRanker()
+	{
+		$result = [];
+		$sql = 'SELECT '
+			. '  A.server_id'
+			. ', A.auth_id'
+			. ',	SUM(A.csx_kills) - SUM(csx_deaths) AS csx_score'
+			. ',	SUM(A.csx_kills)	AS csx_kills'
+			. ',	SUM(A.csx_tks)		AS csx_tks'
+			. ',	SUM(A.csx_deaths)	AS csx_deaths'
+			. ',	SUM(A.csx_hits)		AS csx_hits'
+			. ',	SUM(A.csx_dmg)		AS csx_dmg'
+			. ',	SUM(A.csx_shots)	AS csx_shots'
+			. ',	SUM(A.csx_hs)		AS csx_hs'
+			. ',	SUM(A.h_head)		AS h_head'
+			. ',	SUM(A.h_chest)		AS h_chest'
+			. ',	SUM(A.h_stomach)	AS h_stomach'
+			. ',	SUM(A.h_larm)		AS h_larm'
+			. ',	SUM(A.h_rarm)		AS h_rarm'
+			. ',	SUM(A.h_lleg)		AS h_lleg'
+			. ',	SUM(A.h_rleg)		AS h_rleg'
+			. ' FROM ' . $this->table . ' AS A'
+			. ' INNER JOIN (SELECT C.auth_id FROM user_info AS C GROUP BY C.auth_id) AS B ON A.auth_id = B.auth_id'
+			. ' WHERE 1 = 1'
+			. ' GROUP BY A.server_id, A.auth_id'
+			. ' ORDER BY csx_score desc';
+
+		try {
+			$prp = $this->dbh->prepare($sql);
+			$prp->execute();
+			$result = $prp->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			echo $e->getMessage() . "\n";
+		}
+
+		return $result;
+	}
+
 	// get_user_wstats
 	function GetEloRankForUser($where = array()) 
 	{
