@@ -103,6 +103,7 @@ class PageMain
 	{
 		for($i = 0; $i < count($dataset); $i++)
 		{
+			$dataset[$i]['csx_rank'] = $i + 1;
 			if (isset($info[$dataset[$i]['auth_id']]))
 			{
 				$dataset[$i]['name']		= $info[$dataset[$i]['auth_id']]['name'];

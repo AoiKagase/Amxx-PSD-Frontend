@@ -34,6 +34,7 @@ class T_USER_INFO extends T_CORE
 			.' WHERE created_at >= (SELECT MAX(created_at) FROM user_info AS B WHERE B.auth_id = A.auth_id)'
 			.' GROUP BY A.auth_id'
 			.' ORDER BY A.auth_id';
+
 		try
 		{
 			$prp = $this->dbh->prepare($sql);

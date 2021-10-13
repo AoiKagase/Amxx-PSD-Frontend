@@ -91,6 +91,7 @@ class T_USER_WSTATS extends T_CORE
 		$sql = 'SELECT '
 			. '  A.server_id'
 			. ', A.auth_id'
+			. ', B.name'
 			. ',	SUM(A.csx_kills) - SUM(csx_deaths) AS csx_score'
 			. ',	SUM(A.csx_kills)	AS csx_kills'
 			. ',	SUM(A.csx_tks)		AS csx_tks'
@@ -107,10 +108,11 @@ class T_USER_WSTATS extends T_CORE
 			. ',	SUM(A.h_lleg)		AS h_lleg'
 			. ',	SUM(A.h_rleg)		AS h_rleg'
 			. ' FROM ' . $this->table . ' AS A'
-			. ' INNER JOIN (SELECT C.auth_id FROM user_info AS C GROUP BY C.auth_id) AS B ON A.auth_id = B.auth_id'
+			. ' INNER JOIN (SELECT C.auth_id, C.name FROM user_info AS C GROUP BY C.auth_id) AS B ON A.auth_id = B.auth_id'
 			. ' WHERE 1 = 1'
 			. ' GROUP BY A.server_id, A.auth_id'
-			. ' ORDER BY csx_score desc';
+			. ' ORDER BY csx_score desc'
+;//			. ' LIMIT 10';
 
 		try {
 			$prp = $this->dbh->prepare($sql);
