@@ -16,6 +16,7 @@ class T_USER_INFO extends T_CORE
 			'auth_id',
 			'name',
 			'latest_ip',
+			'geoip_code2',
 			'online_time',
 			'created_at',
 			'updated_at',
@@ -29,6 +30,7 @@ class T_USER_INFO extends T_CORE
 			.'	A.auth_id'
 			.',	A.name'
 			.', A.latest_ip'
+			.', A.geoip_code2'
 			.',	SEC_TO_TIME(FROM_UNIXTIME(A.online_time) - FROM_UNIXTIME(0)) AS online_time'
 			.' FROM user_info AS A'
 			.' WHERE created_at >= (SELECT MAX(created_at) FROM user_info AS B WHERE B.auth_id = A.auth_id)'

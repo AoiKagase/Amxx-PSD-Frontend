@@ -8,9 +8,6 @@ define("DB_NAME", ""); // Database Name.
 // Steam Api Key.
 define("STEAM_API_KEY", "");
 
-// GeoIP Databases.
-define("GEOIP_DATABASE", "/usr/local/share/GeoIP/GeoLite2-City.mmdb");
-
 // Twig Directories.
 define("TWIG_TEMPLATE_DIR", "templates");
 define("TWIG_COMPILED_DIR", "templates/compiled");

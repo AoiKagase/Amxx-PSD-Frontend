@@ -99,16 +99,7 @@ class Index extends PageMainForm
 				if (isset($steam_data[$auth_id]))
 				{
 					$stats_rec[$i]['steam_data'] = $steam_data[$auth_id]; 
-					try
-					{
-						if (isset($info_array[$stats_rec[$i]['auth_id']]['latest_ip']))
-						{
-							$country_rec 		   = $this->geoip->city($info_array[$stats_rec[$i]['auth_id']]['latest_ip']);
-							$stats_rec[$i]['country'] = strtolower($country_rec->country->isoCode);
-						}
-					} catch(Exception $err)
-					{
-					}
+					$stats_rec[$i]['country'] = strtolower($info_array[$stats_rec[$i]['auth_id']]['geoip_code2']);
 				}
 
 				$stats_rec[$i]['csx_rank'] = $i + 1;
