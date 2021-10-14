@@ -1,11 +1,14 @@
 <?php
-require_once("includes/page_main.inc");
+
+use GeoIp2\Record\Location;
+
+require_once("includes/page_main_form.inc");
 require_once("includes/db/user_info.inc");
 require_once("includes/db/server_round.inc");
 require_once("includes/db/total_stats.inc");
 require_once("includes/db/user_wstats.inc");
 
-class UserDetail extends PageMain
+class UserDetail extends PageMainForm
 {
 	function __construct()
 	{
@@ -33,7 +36,7 @@ class UserDetail extends PageMain
 			$steam_link = $this->get_user_steam_link($auth_id);
 
 			$s 			= new SteamID($auth_id);
-			
+	
 			echo $this->twig->render('user_detail.tpl',  
 				[
 					'info'		=> $info_rec,
@@ -46,7 +49,7 @@ class UserDetail extends PageMain
 			);
 		} else
 		{
-			redirect("./");
+			header("Location: ./index.php");
 		}
 	}
 
@@ -70,7 +73,8 @@ class UserDetail extends PageMain
 		// Get Total Score;
 		$total_stats = new T_TOTAL_STATS($this->dbh);
 		$total		 = $total_stats->GetList($where);
-		return $this->calculate_rate($total)[0];
+		$this->calculate_rate($total[0]);
+		return $total[0];
 	}
 
 	function get_server_round($auth_id)
@@ -96,7 +100,8 @@ class UserDetail extends PageMain
 		];
 
 		$stats_rec	= $stats->GetWeaponRankForUser($where);
-		$stats_rec	= $this->calculate_rate($stats_rec);
+		for($i = 0; $i < count($stats_rec); $i++)
+			$this->calculate_rate($stats_rec[$i]);
 
 		return $stats_rec;
 	}

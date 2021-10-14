@@ -1,5 +1,5 @@
 <?php
-require_once("includes/db/_config.inc");
+require_once("includes/_config.inc");
 
 class DBHandler extends PDO
 {
