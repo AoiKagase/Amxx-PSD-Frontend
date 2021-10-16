@@ -1,6 +1,7 @@
 {
     "require": {
         "twig/twig": "^3.0",
-        "components/flag-icon-css": "^3.5"
+        "components/flag-icon-css": "^3.5",
+        "guzzlehttp/guzzle": "^7.3"
     }
 }
