@@ -2,6 +2,10 @@
 require_once(__DIR__ . "/SteamID.inc");
 require_once(__DIR__ . "/page_main.inc");
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
+use GuzzleHttp\Psr7;
+
 class PageMainForm extends PageMain
 {
 	protected function calculate_rate(&$dataset, $info = null)
@@ -33,68 +37,61 @@ class PageMainForm extends PageMain
 			$dataset['kdrate']		= $dataset['csx_kills'];
 	}
 
-	protected function get_user_steam_link($auth_ids = '')
+	protected function get_user_steam_link($auth_ids = [])
 	{
-		$ids = explode(',', $auth_ids);
-		$auth_ids = '';
-		foreach($ids as $auth_id)
-		{
-			if (isset($auth_id) && $auth_id !== '')
-			{
-				$s = new SteamID($auth_id);
-				$auth_ids .= $s->ConvertToUInt64().',';
-			}
-		}
-
+		$client = new Client();
+		$promises = [];
 		// Need Your Steam API key
 		$WebAPIKey = STEAM_API_KEY;
-
+//		$WebAPIKey = '';
 		$Parameters =
 		[
 			'key' => $WebAPIKey,
-			'steamids' => $auth_ids
+			'steamids' => '',
 		];
-	
-		$api_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?' . http_build_query( $Parameters );
-		$json = $this->getApiDataCurl($api_url);
-	
-		if(isset($json['response']['players']))
-			return array_column($json['response']['players'], null, 'steamid');
 
-        return array();
+		$i = 0;
+		foreach($auth_ids as $str_auth_ids)
+		{
+			$steam_ids = '';
+			$ids = explode(',', $str_auth_ids);
+			foreach ($ids as $auth_id) {
+				if (isset($auth_id) && $auth_id !== '') {
+					$s = new SteamID($auth_id);
+					$steam_ids .= $s->ConvertToUInt64() . ',';
+				}
+			}
+			$Parameters['steamids'] = $steam_ids;
+			$api_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?'. http_build_query($Parameters);
+			try
+			{
+				$promises[$i++] = $client->getAsync($api_url);
+
+			} catch(\GuzzleHttp\Exception\ClientException $e)
+			{
+				echo $e->getHandlerContext()['errno'];
+			}
+		}
+
+		$result  = [];
+
+		try {
+
+			$results = Promise\Utils::unwrap($promises);
+			foreach($results as $response)
+			{
+				if ($response->getStatusCode() == 200)
+				{
+					$json = json_decode($response->getBody(), true);
+					if(isset($json['response']['players']))
+						$result = array_merge($result, $json['response']['players']);
+				}
+			}
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+//			echo Psr7\Message::toString($e->getRequest());
+			echo Psr7\Message::toString($e->getResponse());
+		}
+		$result = array_column($result, null, 'steamid');
+        return $result;
 	}
-
-    private function getApiDataCurl($url)
-    {
-        $option = [
-            CURLOPT_RETURNTRANSFER => true, //文字列として返す
-            CURLOPT_TIMEOUT        => 10, // タイムアウト時間
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt_array($ch, $option);
-
-        $json    = curl_exec($ch);
-        $info    = curl_getinfo($ch);
-        $errorNo = curl_errno($ch);
-
-        // OK以外はエラーなので空白配列を返す
-        if ($errorNo !== CURLE_OK) {
-            // 詳しくエラーハンドリングしたい場合はerrorNoで確認
-            // タイムアウトの場合はCURLE_OPERATION_TIMEDOUT
-            var_dump($errorNo);
-            return [];
-        }
-
-        // 200以外のステータスコードは失敗とみなし空配列を返す
-        if ($info['http_code'] !== 200) {
-            var_dump($info['http_code']);
-            return [];
-        }
-
-        // 文字列から変換
-        $jsonArray = json_decode($json, true);
-
-        return $jsonArray;
-    }
 }

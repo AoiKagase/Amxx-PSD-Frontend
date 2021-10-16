@@ -140,11 +140,8 @@ class Index extends PageMainForm
 	{
 		$auth_ids 	= $this->make_steamid_list($records);
 
-		$steam_data = [];
-		foreach($auth_ids as $auth_records)
-		{
-			$steam_data += $this->get_user_steam_link($auth_records);
-		}
+		$steam_data = $this->get_user_steam_link($auth_ids);
+
 		return $steam_data;
 	}
 

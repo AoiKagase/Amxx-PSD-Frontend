@@ -34,7 +34,7 @@ class UserDetail extends PageMainForm
 
 			$hit_mk		= $this->get_hit_marker($wstats_sc);
 
-			$steam_link = $this->get_user_steam_link($auth_id);
+			$steam_link = $this->get_user_steam_link(array($auth_id));
 
 			$s 			= new SteamID($auth_id);
 	
