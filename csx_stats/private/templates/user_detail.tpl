@@ -108,7 +108,7 @@ $(function() {
 				</div>				   
 				<div class="card border-light mb-3" style="min-width:10rem; max-width: 10rem;">
 					<div class="card-body">
-						<h4 class="card-title">{{ info.online_time }}</h4>
+						<h4 class="card-title">{{ total.online_time }}</h4>
 						<p class="card-text">Play Time</p>
 					</div>
 				</div>				   

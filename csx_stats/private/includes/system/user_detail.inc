@@ -72,8 +72,8 @@ class UserDetail extends PageMainForm
 			'auth_id'	=> $auth_id,
 		];
 		// Get Total Score;
-		$total_stats = new T_TOTAL_STATS($this->dbh);
-		$total		 = $total_stats->GetList($where);
+		$total_stats = new T_USER_WSTATS($this->dbh);
+		$total		 = $total_stats->GetUserTotalScore($where);
 		$this->calculate_rate($total[0]);
 		return $total[0];
 	}
